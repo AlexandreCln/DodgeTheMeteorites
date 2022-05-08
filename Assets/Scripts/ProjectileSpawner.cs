@@ -5,7 +5,6 @@ public class ProjectileSpawner : MonoBehaviour
     [SerializeField]private GameObject _projectilePrefab;
     [SerializeField]private float _timeBetweenSpawnMin = .33f;
     [SerializeField]private float _timeBetweenSpawnMax = .8f;
-    [SerializeField]private float _timeToReachMaxDifficulty = 120f;
     [SerializeField]private float _angleMax = 15f;
     [SerializeField]private (float, float) _sizeMinMax = (1f, 4f);
     private Vector2 screenHalfSizeWorldUnits;
@@ -20,8 +19,7 @@ public class ProjectileSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time < _timeToReachMaxDifficulty)
-            _timeBetweenSpawn = Mathf.Lerp(_timeBetweenSpawnMax, _timeBetweenSpawnMin, Time.time / _timeToReachMaxDifficulty);
+        _timeBetweenSpawn = Mathf.Lerp(_timeBetweenSpawnMax, _timeBetweenSpawnMin, Difficulty.GetDifficultyPercent());
 
         if (Time.time > _newSpawnTime)
         {

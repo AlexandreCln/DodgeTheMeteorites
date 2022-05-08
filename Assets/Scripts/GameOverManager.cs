@@ -1,11 +1,11 @@
 using UnityEngine;
-using System.Threading.Tasks;
+using System.Collections;
 
 public class GameOverManager : MonoBehaviour
 {
     private Globals _globals;
-    [SerializeField] private int _secondsBeforeGameOver;
-
+    [SerializeField] private int _secondsDelayGameOver;
+    [SerializeField] private AudioSource _gameOverAudio;
 
     void Start()
     {
@@ -16,7 +16,14 @@ public class GameOverManager : MonoBehaviour
     void GameOver()
     {
         Debug.Log("GAME OVER");
+        StartCoroutine(PlayGameOverAfterTime());
+    }
 
-        Task.Delay(1000 * _secondsBeforeGameOver).ContinueWith(t => Debug.Log("GAME OVER SCREEN"));
+    IEnumerator PlayGameOverAfterTime()
+    {
+        yield return new WaitForSeconds(_secondsDelayGameOver);
+        _gameOverAudio.Play();
+        yield return new WaitForSeconds(_gameOverAudio.clip.length);
+        Debug.Log("GAME OVER SCREEN");
     }
 }

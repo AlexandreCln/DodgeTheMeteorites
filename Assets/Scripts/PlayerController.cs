@@ -5,6 +5,8 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
+    [SerializeField] private SpriteRenderer _sr;
+    [SerializeField] private AudioSource _meteoriteImpactAudio;
     private BoxCollider2D _boxCollider;
     
     #region Variables: Movements 
@@ -29,7 +31,6 @@ public class PlayerController : MonoBehaviour
             _boxCollider.enabled = false;
             return;
         }
-
         HandleMovement();
     }
 
@@ -43,6 +44,7 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Projectile"))
         {
             Globals.instance.HitPlayer();
+            _meteoriteImpactAudio.Play();
             StartCoroutine(HitFlashInvulnerability());
             
             if (Globals.instance.PlayerIsDead)
@@ -76,9 +78,9 @@ public class PlayerController : MonoBehaviour
         _boxCollider.enabled = false;
         while (temp < 5)
         {
-            GetComponent<SpriteRenderer>().color = Color.red;
+            _sr.color = Color.red;
             yield return new WaitForSeconds(.08f);
-            GetComponent<SpriteRenderer>().color = Color.white;
+            _sr.color = Color.white;
             yield return new WaitForSeconds(.08f);
             temp++;
         }

@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField]private float _fallingSpeed = 5f;
+    [SerializeField]private float _fallingSpeedMin = 7f;
+    [SerializeField]private float _fallingSpeedMax = 15f;
 
     private float _verticalPosToDestroy;
 
@@ -15,7 +16,8 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector3.down * _fallingSpeed * Time.deltaTime);
+        float fallingSpeed = Mathf.Lerp(_fallingSpeedMin, _fallingSpeedMax, Difficulty.GetDifficultyPercent());
+        transform.Translate(Vector3.down * fallingSpeed * Time.deltaTime);
 
         if (transform.position.y < _verticalPosToDestroy)
             Destroy(gameObject);
